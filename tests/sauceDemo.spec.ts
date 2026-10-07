@@ -1,27 +1,31 @@
 import { test, expect } from '@playwright/test';
+import { HomePage } from '../pages/HomePage';
 
 test.describe('@smoke Sauce Demo homepage', () => {
+  let homePage: HomePage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    homePage = new HomePage(page);
+    await homePage.goto();
   });
 
-  test('Verify HomePage Side Bars', async ({ page }) => {
-    await expect(page.getByRole('link', { name: 'Sauce Demo' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-    await page.getByRole('link', { name: 'Catalog' }).click();
-    await expect(page.getByRole('link', { name: 'Catalog' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Blog' })).toBeVisible();
-    await expect(page.locator('#main-menu').getByRole('link', { name: 'About Us' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Wish list' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Refer a friend' })).toBeVisible();
+  test('Verify HomePage Side Bars', async () => {
+    await expect(homePage.sauceDemoLink).toBeVisible();
+    await expect(homePage.homeLink).toBeVisible();
+    await homePage.navigateToCatalog();
+    await expect(homePage.catalogLink).toBeVisible();
+    await expect(homePage.blogLink).toBeVisible();
+    await expect(homePage.aboutUsLink).toBeVisible();
+    await expect(homePage.wishListLink).toBeVisible();
+    await expect(homePage.referFriendLink).toBeVisible();
   });
 
-  test('Verify HomePage Top Bars', async ({ page }) => {
-    await page.waitForLoadState('networkidle');
-    await expect(page.getByRole('link', { name: 'Sauce Demo' })).toBeVisible();
-    await expect(page.getByRole('banner').getByRole('link', { name: 'Search' })).toBeVisible();
-    await expect(page.getByRole('banner').getByRole('link', { name: 'About Us' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Log In' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Sign up' })).toBeVisible();
+  test('Verify HomePage Top Bars', async () => {
+    await homePage.waitForNetworkIdle();
+    await expect(homePage.sauceDemoLink).toBeVisible();
+    await expect(homePage.searchLink).toBeVisible();
+    await expect(homePage.aboutUsLink).toBeVisible();
+    await expect(homePage.loginLink).toBeVisible();
+    await expect(homePage.signUpLink).toBeVisible();
   });
 });
