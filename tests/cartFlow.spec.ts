@@ -1,24 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { CatalogPage } from '../pages/CatalogPage';
-import { ProductPage } from '../pages/ProductPage';
-import { CartPage } from '../pages/CartPage';
+import { test, expect } from '../fixtures/fixtures';
 
 test.describe('@smoke Cart Flow', () => {
-  let homePage: HomePage;
-  let catalogPage: CatalogPage;
-  let productPage: ProductPage;
-  let cartPage: CartPage;
-
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
-    catalogPage = new CatalogPage(page);
-    productPage = new ProductPage(page);
-    cartPage = new CartPage(page);
+  test.beforeEach(async ({ homePage }) => {
     await homePage.goto();
   });
 
-  test('Add Black Heels to Cart and Verify in Cart', async () => {
+  test('Add Black Heels to Cart and Verify in Cart', async ({ homePage, catalogPage, productPage, cartPage }) => {
     await homePage.navigateToCatalog();
     await catalogPage.clickBlackHeels();
     await productPage.addToCart();

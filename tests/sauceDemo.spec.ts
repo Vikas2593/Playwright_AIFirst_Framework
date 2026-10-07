@@ -1,15 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
+import { test, expect } from '../fixtures/fixtures';
 
 test.describe('@smoke Sauce Demo homepage', () => {
-  let homePage: HomePage;
-
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
+  test.beforeEach(async ({ homePage }) => {
     await homePage.goto();
   });
 
-  test('Verify HomePage Side Bars', async () => {
+  test('Verify HomePage Side Bars', async ({ homePage }) => {
     await expect(homePage.sauceDemoLink).toBeVisible();
     await expect(homePage.homeLink).toBeVisible();
     await homePage.navigateToCatalog();
@@ -20,7 +16,7 @@ test.describe('@smoke Sauce Demo homepage', () => {
     await expect(homePage.referFriendLink).toBeVisible();
   });
 
-  test('Verify HomePage Top Bars', async () => {
+  test('Verify HomePage Top Bars', async ({ homePage }) => {
     await homePage.waitForNetworkIdle();
     await expect(homePage.sauceDemoLink).toBeVisible();
     await expect(homePage.searchLink).toBeVisible();
